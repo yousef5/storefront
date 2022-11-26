@@ -11,7 +11,7 @@ class UserStore {
 
       //? query sentance
       const sqlQuery =
-        'INSERT INTO users (email,user_name,first_name,last_name,password) values ($1,$2,$3,$4,$5) RETURNING email,user_name,first_name,last_name';
+        'INSERT INTO users (email,user_name,first_name,last_name,password) values ($1,$2,$3,$4,$5) RETURNING id, email,user_name,first_name,last_name';
 
       //? use open connection with sql to get result
       const result = await connection.query(sqlQuery, [
@@ -56,7 +56,7 @@ class UserStore {
 
       //? query sentance
       const sqlQuery =
-        'UPdate users SET email=$1, user_name=$2,first_name=$3,last_name=$4,password=$5 WHERE id=($6) RETURNING email,user_name,first_name,last_name';
+        'update users SET email=$1, user_name=$2,first_name=$3,last_name=$4,password=$5 WHERE id=($6) RETURNING email,user_name,first_name,last_name';
 
       //? use open connection with sql to get result
       const result = await connection.query(sqlQuery, [
@@ -101,7 +101,7 @@ class UserStore {
       const connection = await pool.connect();
 
       //? query sentance
-      const sqlQuery = 'DELETE  FROM users WHERE id=($1)';
+      const sqlQuery = 'DELETE  FROM users WHERE id=($1) RETURNING *';
 
       //? use open connection with sql to get result
       const result = await connection.query(sqlQuery, [id]);
@@ -113,25 +113,25 @@ class UserStore {
       throw new Error(`There is a Problem delete one user with id :${id}`);
     }
   }
-  async authenticate(userName: string, password: string): Promise<User | null> {
+  async authenticate(email: string, password: string): Promise<User | null> {
     try {
       //? connect to db
       const connection = await pool.connect();
 
       //? query sentance
-      const sqlQuery = 'SELECT password FROM users WHERE user_name=($1)';
+      const sqlQuery = 'SELECT password FROM users WHERE email=($1)';
 
       //? use open connection with sql to get result
-      const result = await connection.query(sqlQuery, [userName]);
+      const result = await connection.query(sqlQuery, [email]);
 
       //! check result length is true
       if (result.rows.length) {
         const userPassHash = result.rows[0].password;
-        const isValidPass = comparePass(userPassHash, password);
+        const isValidPass = comparePass(password, userPassHash);
         if (isValidPass) {
           const wantedUser = await connection.query(
-            'SELECT * FROM users WHERE user_name=($1)',
-            [userPassHash]
+            'SELECT * FROM users WHERE email=($1)',
+            [email]
           );
           return wantedUser.rows[0];
         }
