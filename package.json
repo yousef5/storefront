@@ -9,8 +9,10 @@
     "watch": "tsc-watch --esModuleInterop src/index.ts --outDir ./build --onSuccess \"node ./build/index.js\"",
     "jasmine": "jasmine",
     "build": "tsc",
-    "db:migrate:up": "db-migrate up -e dev",
-    "db:migrate:reset": "db-migrate reset -e dev",
+    "db:migrate:up": "db-migrate --env dev up",
+    "db:migrate:reset": "db-migrate  --env dev reset",
+    "test:migrate:up": "db-migrate --env test up",
+    "test:migrate:reset": "db-migrate --env test reset",
     "test": "set NODE_ENV=test&& npx db-migrate --env test up && npm run build && jasmine && npx db-migrate --env test reset"
   },
   "author": "Udacity",
