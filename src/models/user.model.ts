@@ -56,7 +56,7 @@ class UserStore {
 
       //? query sentance
       const sqlQuery =
-        'update users SET email=$1, user_name=$2,first_name=$3,last_name=$4,password=$5 WHERE id=($6) RETURNING email,user_name,first_name,last_name';
+        'update users SET email=$1, user_name=$2,first_name=$3,last_name=$4,password=$5 WHERE id=($6) RETURNING id, email,user_name,first_name,last_name';
 
       //? use open connection with sql to get result
       const result = await connection.query(sqlQuery, [
@@ -83,14 +83,15 @@ class UserStore {
       const connection = await pool.connect();
 
       //? query sentance
-      const sqlQuery = 'SELECT * FROM users WHERE id=($1)';
+      const sqlQuery =
+        'SELECT  id, email,user_name,first_name,last_name FROM users WHERE id=($1)';
 
       //? use open connection with sql to get result
-      const result = await connection.query(sqlQuery, [id]);
+      const result = await connection.query(sqlQuery, [id as number]);
 
       //? release db connection
       connection.release();
-      return result.rows[0];
+      return result?.rows[0] || {};
     } catch (error) {
       throw new Error(`There is a Problem show one user with id :${id}`);
     }
@@ -101,7 +102,8 @@ class UserStore {
       const connection = await pool.connect();
 
       //? query sentance
-      const sqlQuery = 'DELETE  FROM users WHERE id=($1) RETURNING *';
+      const sqlQuery =
+        'DELETE  FROM users WHERE id=($1) RETURNING id, email,user_name,first_name,last_name';
 
       //? use open connection with sql to get result
       const result = await connection.query(sqlQuery, [id]);
@@ -130,7 +132,7 @@ class UserStore {
         const isValidPass = comparePass(password, userPassHash);
         if (isValidPass) {
           const wantedUser = await connection.query(
-            'SELECT * FROM users WHERE email=($1)',
+            'SELECT id, email,user_name,first_name,last_name FROM users WHERE email=($1) ',
             [email]
           );
           return wantedUser.rows[0];

@@ -14,6 +14,7 @@ const {
   BCRYPT_PASSWORD,
   SALT_ROUNDS,
   TOKEN_SECRET,
+  TOKEN_EXPIRES,
 } = process.env;
 
 export default {
@@ -26,4 +27,5 @@ export default {
   pepper: BCRYPT_PASSWORD,
   salt: SALT_ROUNDS,
   tokenSecret: TOKEN_SECRET,
+  tokenExpire: TOKEN_EXPIRES,
 };

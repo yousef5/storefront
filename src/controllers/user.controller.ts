@@ -131,7 +131,9 @@ class UserStoreController {
           message: 'the username and pass not match',
         });
       }
-      const token = jwt.sign({ user }, vars.tokenSecret as unknown as string);
+      const token = jwt.sign({ user }, vars.tokenSecret as unknown as string, {
+        expiresIn: '1h',
+      });
       return res.json({
         status: 'success',
         data: { ...user, token },
