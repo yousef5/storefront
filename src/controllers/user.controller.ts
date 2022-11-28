@@ -26,11 +26,17 @@ class UserStoreController {
       }
       //? create user with model
       const user = await userStore.create(req.body as User);
+      const token = await jwt.sign(
+        { user },
+        vars.tokenSecret as unknown as string,
+        { expiresIn: '1h' }
+      );
 
       res.status(200).json({
         status: 'success',
         message: `user created : ${user.user_name}`,
         user: user,
+        token: token,
       });
     } catch (error) {
       next(error);

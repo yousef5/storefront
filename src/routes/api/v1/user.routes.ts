@@ -14,10 +14,10 @@ const {
 } = userController;
 
 userRoute.post('/', createUser);
+userRoute.post('/authenticate', authenticateUser);
 userRoute.get('/', authMiddleWare, getAllUsers);
 userRoute.patch('/', authMiddleWare, updateOneUser);
 userRoute.get('/:id', authMiddleWare, getOneUser);
 userRoute.delete('/:id', authMiddleWare, deleteOneUser);
-userRoute.post('/authenticate', authenticateUser);
 
 export default userRoute;

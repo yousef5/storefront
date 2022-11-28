@@ -60,7 +60,7 @@ describe('User Test EndPoints', () => {
   });
 
   describe('Test CRUD EndPoints', () => {
-    it('Create EndPoint Should Create user and return user', async () => {
+    it('Create EndPoint Should Create user and return user and token', async () => {
       const res = await request
         .post('/api/v1/users')
         .set('Content-type', 'application/json')
@@ -76,6 +76,7 @@ describe('User Test EndPoints', () => {
       expect(res.status).toBe(200);
       expect(email).toBe('test2@test.com');
       expect(id).toBe(2);
+      expect(res.body.token).toBeDefined();
     });
     it('show EndPoint Should  return user', async () => {
       const res = await request
