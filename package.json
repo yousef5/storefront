@@ -4,7 +4,6 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "dev": "node src/index.ts",
     "migrate": "db-migrate",
     "watch": "tsc-watch --esModuleInterop src/index.ts --outDir ./build --onSuccess \"node ./build/index.js\"",
     "jasmine": "jasmine",
@@ -13,7 +12,9 @@
     "db:migrate:reset": "db-migrate  --env dev reset",
     "test:migrate:up": "db-migrate --env test up",
     "test:migrate:reset": "db-migrate --env test reset",
-    "test": "set NODE_ENV=test&& npx db-migrate --env test up && npm run build && jasmine && npx db-migrate --env test reset"
+    "test": "set NODE_ENV=test&& npx db-migrate --env test up && npm run build && jasmine && npx db-migrate --env test reset",
+    "lint": "eslint . --ext .ts",
+    "format": "npm run lint --fix"
   },
   "author": "Udacity",
   "license": "ISC",

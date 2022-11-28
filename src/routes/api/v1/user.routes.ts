@@ -15,9 +15,9 @@ const {
 
 userRoute.post('/', createUser);
 userRoute.get('/', authMiddleWare, getAllUsers);
-userRoute.patch('/', updateOneUser);
-userRoute.get('/:id', getOneUser);
-userRoute.delete('/:id', deleteOneUser);
+userRoute.patch('/', authMiddleWare, updateOneUser);
+userRoute.get('/:id', authMiddleWare, getOneUser);
+userRoute.delete('/:id', authMiddleWare, deleteOneUser);
 userRoute.post('/authenticate', authenticateUser);
 
 export default userRoute;

@@ -1,54 +1,192 @@
-# Storefront Backend Project
+# Build A Storefront Backend => Udacity
 
-## Getting Started
+This is a backend API build in Nodejs use express framework for an online store. It produce a RESTful API that will be used by the frontend team.
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+## Technologies
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+- Postgres ===> for the database
+- Node/Express ====> for the application logic
+- dotenv ====> from npm for managing environment variables
+- db-migrate ====> from npm for migrations
+- jsonwebtoken =====> from npm for working with JWTs
+- jasmine =====> from npm for testing
+- helmet =====> from add some security to app
+- morgan =====> as alogger to our app
+- bcrypt =====> to hash password in our app
+- jasmine =====> from npm for testing
+- supertest ====> use in test api endpoints
 
-## Steps to Completion
+## Installation
 
-### 1. Plan to Meet Requirements
+```
+npm install
+```
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
+## Packages
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+### Dependencies
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+```sh
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.8.0",
+    "supertest": "^6.3.1"
+```
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+### Dev Dependencies
 
-### 2.  DB Creation and Migrations
+```sh
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.14",
+    "@types/helmet": "^4.0.0",
+    "@types/jasmine": "^3.10.6",
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^18.11.9",
+    "@types/pg": "^7.14.11",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "eslint": "^8.28.0",
+    "eslint-config-plugin": "^1.0.11",
+    "eslint-config-prettier": "^8.5.0",
+    "jasmine": "^3.99.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.0",
+    "ts-node": "^10.9.1",
+    "tsc-watch": "^4.6.2",
+    "typescript": "^4.9.3"
+```
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+## Package Install Global
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
+- typescript
+- jasmine
+- db-migrate
 
-### 3. Models
+```sh
+npm i typescript jasmine db-migrate -g
+```
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+## Scripts
 
-### 4. Express Handlers
+- ### Watch
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
+```sh
+npm run watch => using tsc-watch
+```
 
-### 5. JWTs
+- ### Build
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
+```sh
+npm run build
+```
 
-### 6. QA and `README.md`
+- ### Migrate up => dev db
 
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
+```sh
+npm run db:migrate:up
+```
 
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+- ### Migrate reset ==> dev db
+
+```sh
+npm run db:migrate:reset
+```
+
+- ### Migrate up => test db
+
+```sh
+npm run test:migrate:up
+```
+
+- ### Migrate reset ==> test db
+
+```sh
+npm run test:migrate:reset
+```
+
+- ### Test
+
+```sh
+npm run test
+```
+
+- ### Linter
+
+```sh
+npm run lint
+npm run format # for fix
+```
+
+### Database Creation
+
+```sh
+# create user
+CREATE USER dbuser WITH PASSWORD 'sercretPass';
+
+# create Database for dev and test
+CREATE DATABASE store_dev; CREATE DATABASE store_test;
+
+# grant all databases to the user
+GRANT ALL PRIVILEGES ON DATABASE store_dev TO dbuser; GRANT ALL PRIVILEGES ON DATABASE store_dev TO dbuser;
+```
+
+### Database Migrations
+
+```sh
+# connect to db from terminal
+psql -h 127.0.0.1 -U postgress
+# insert root password that you create when install pg
+\l #to show db in schema
+# run this command to create all tables
+db-migrate up
+#  run this command to drop each table separately
+db-migrate down
+# to reset the data schema tables run this command
+db-migrate reset
+```
+
+### Ports used
+
+```sh
+PORT=3000
+DB_PORT=5432
+
+```
+
+After start up, the server will start on port `3000` and the database on port `5432`
+
+### Environmental Variables (.env)
+
+```sh
+# to connect with the database use the following environmental variables
+ # .env variables
+NODE_ENV=dev
+PORT=3000
+# db information
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=store_dev
+DB_DATABASE_TEST=store_test
+DB_USER=dbuser
+DB_PASS=sercretPass
+# encryption
+BCRYPT_PASSWORD=welcome_to_udacity_nanodegree
+SALT_ROUNDS=10
+TOKEN_SECRET=egyfwd_4_ever
+TOKEN_EXPIRES=600
+
+```
+
+The database schema and and API route information can be found in the [REQUIREMENT.md](REQUIREMENTS.md)
