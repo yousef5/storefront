@@ -13,9 +13,9 @@ const {
 } = productController;
 
 productRoute.post('/', authMiddleWare, createProduct);
-productRoute.get('/', authMiddleWare, getAllProducts);
+productRoute.get('/', getAllProducts);
 productRoute.patch('/', authMiddleWare, updateOneProduct);
-productRoute.get('/:id', authMiddleWare, getOneProduct);
+productRoute.get('/:id', getOneProduct);
 productRoute.delete('/:id', authMiddleWare, deleteOneProduct);
 
 export default productRoute;
